@@ -13,6 +13,7 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
 const cookieParser = require("cookie-parser");
+const flash = require("connect-flash");
 
 
 // initial config
@@ -76,15 +77,27 @@ function eraseSessionMessage() {
 app.use(checkloginStatus);
 app.use(eraseSessionMessage());
 
+app.use(flash()); // use the flash messages lib
+// flash messages last for 1 client/server cycle and are then erased from memory
+
+// Custom middle ware
+// every time the server is called through HTTP ...
+// this exposeFlashMessage callback will be executed
+app.use(function exposeFlashMessage(req, res, next) {
+  res.locals.success_msg = req.flash("success");
+  res.locals.error_msg = req.flash("error");
+  next();
+});
+
 // Getting/Using router(s)
 const basePageRouter = require("./routes/index");
 app.use("/", basePageRouter);
+
+const authRouter = require("./routes/auth.js");
+app.use("/auth", authRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(
     `app started at ${process.env.SITE_URL}:${process.env.PORT}`
   );
 });
-
-const authRouter = require("./routes/auth.js");
-app.use("/auth", authRouter);

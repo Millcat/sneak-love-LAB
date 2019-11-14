@@ -8,7 +8,6 @@ const bcrypt = require("bcrypt");
 // Registering SIGNUP
 
 router.post("/signup", (req, res, next) => {
-
     const user = req.body; // req.body contains the submited informations (out of post request)
 
     // if (req.file) user.avatar = req.file.secure_url;
@@ -22,16 +21,15 @@ router.post("/signup", (req, res, next) => {
                 email: user.email
             })
             .then(dbRes => {
-
                 if (dbRes) return res.redirect("/signup");
 
                 const salt = bcrypt.genSaltSync(10); // cryptography librairie
                 const hashed = bcrypt.hashSync(user.password, salt); // generates a secured random hashed password
                 user.password = hashed; // new user is ready for db
-                console.log(req.body);
+                // console.log(req.body);
                 userModel
                     .create(user) // name, lastname, email, password
-                    .then(() => res.redirect("/signin"))
+                    .then(() => res.redirect("/signin")) // vers la home ?
                     .catch(dbErr => console.log("user not created", dbErr));
             })
             .catch(dbErr => next(dbErr));
@@ -46,7 +44,7 @@ router.post("/signin", (req, res, next) => {
     if (!user.email || !user.password) {
         // one or more field is missing
         req.flash("error", "wrong credentials");
-        return res.redirect("/signin");
+        return res.redirect("/auth/signin");
     }
 
     userModel
@@ -57,34 +55,41 @@ router.post("/signin", (req, res, next) => {
             if (!dbRes) {
                 // no user found with this email
                 req.flash("error", "wrong credentials");
-                return res.redirect("/signin");
+                return res.redirect("/auth/signin");
             }
             // user has been found in DB !
             if (bcrypt.compareSync(user.password, dbRes.password)) {
                 // encryption says : password match success
                 req.flash("success", `welcome ${dbRes.email}`);
                 req.session.currentUser = dbRes; // user is now in session... until session.destroy
-                return res.redirect("/admin");
+                return res.redirect("/");
             } else {
                 // encryption says : password match failde
-                return res.redirect("/signin");
+                return res.redirect("/auth/signin");
             }
         })
         .catch(dbErr => {
             console.log(dbErr);
             req.flash("error", "system error ><*");
-            res.redirect("/signin")
+            res.redirect("/auth/signin");
         });
+});
+
+router.get("/signup", (req, res) => {
+    res.render("signup");
+});
+
+router.get("/signin", (req, res) => {
+    res.render("signin");
 });
 
 router.get("/logout", (req, res) => {
     req.session.destroy(err => {
         res.locals.isLoggedIn = undefined;
-        res.locals.isAdmin = undefined;
-        res.redirect("/signin");
+        res.redirect("/auth/signin"); // don't forget the /auth/ path !!!!
     });
 });
 
-console.log("entered in auth.js file !")
+console.log("entered in auth.js file !");
 
 module.exports = router;
