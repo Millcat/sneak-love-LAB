@@ -29,7 +29,7 @@ router.post("/signup", (req, res, next) => {
                 // console.log(req.body);
                 userModel
                     .create(user) // name, lastname, email, password
-                    .then(() => res.redirect("/signin")) // vers la home ?
+                    .then(() => res.redirect("/auth/signin")) // vers la home ?
                     .catch(dbErr => console.log("user not created", dbErr));
             })
             .catch(dbErr => next(dbErr));
