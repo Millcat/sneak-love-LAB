@@ -85,3 +85,6 @@ app.listen(process.env.PORT, () => {
     `app started at ${process.env.SITE_URL}:${process.env.PORT}`
   );
 });
+
+const authRouter = require("./routes/auth.js");
+app.use("/auth", authRouter);
