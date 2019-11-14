@@ -1,44 +1,40 @@
 <div class="big-container product-manage-wrapper flexed-item">
-  <form action="/prod-add" method="get" class="add-product-form" enctype="multiparty/form-data">
+  <form action="/create-sneaker" method="post" class="add-product-form">
     {{#if msg}}
     <p class="msg {{msg.statu}}">{{msg.txt}}</p>
     {{/if}}
     <h3 class="form-title">Add Sneackers to the collection</h3>
     <div class="form-item-wrapper flexed-item">
       <label for="sneacker-name" class="label-name label">Model name</label>
-      <inpuid="sneacker-name" type="text" class="input-text input" placeholder="Nike Air Max 90"
-        value="air max 1">
+      <input id="sneacker-name" type="text" class="input-text input" name="name">
     </div>
     <div class="form-item-wrapper flexed-item">
       <label for="sneacker-ref" class="label-ref label">Réf.</label>
-      <input id="sneacker-ref" type="text" class="input-text input" placeholder="ex: NV23498"
-        value="NV23498">
+      <input id="sneacker-ref" type="text" class="input-text input" name="ref">
     </div>
     <div class="form-item-wrapper flexed-item">
       <label for="sneacker-size" class="label-ref label">Size</label>
-      <input id="sneacker-size" 
-      type="number" class="input-text input" placeholder="ex: 37" value="42">
+      <input id="sneacker-size" type="number" class="input-text input" name="size">
     </div>
     <div class="form-item-wrapper flexed-item">
       <label for="sneacker-descr" class="label-descr label">Description</label>
-      <input id="sneacker-descr" type="text" class="input-text input"
-        placeholder="The better sneakers to run" value="foo bar baz">
+      <input id="sneacker-descr" type="text" class="input-text input" name="description">
     </div>
     <div class="form-item-wrapper flexed-item">
       <label for="sneacker-price" class="label-price label">Price</label>
-      <input id="sneacker-price" type="number" class="sneacker-price input" min="1" value="123">
+      <input id="sneacker-price" type="number" class="sneacker-price input" min="1" name="price">
     </div>
     <div class="form-item-wrapper flexed-item">
       <label for="sneaker-img" class="label-price label">Image</label>
-      <input id="sneaker-img" type="file" class="sneacker-price input">
+      <input id="sneaker-img" type="file" class="sneacker-image input">
     </div>
     <div class="form-item-wrapper flexed-item">
       <label for="category" class="label-main-cat label">Main category</label>
-      <select id="category" class="select" required>
+      <select id="category" class="select" name="category" required>
         <option value="-1" disabled selected>Choose a category</option>
-        <option value="men">Men</option>
-        <option value="women">Women</option>
-        <option value="kids">Kids</option>
+        <option value="men">men</option>
+        <option value="women">women</option>
+        <option value="kids">kids</option>
       </select>
     </div>
 
