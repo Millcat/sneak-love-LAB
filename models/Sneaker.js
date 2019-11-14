@@ -15,6 +15,10 @@ const sneakerSchema = new Schema({
     id_tags: {
         type: Schema.Types.ObjectId,
         ref: "Tag"
+    },
+    image: {
+        type: String,
+        default: "https://i1.adis.ws/i/jpl/jd_333960_a?qlt=80&w=600&h=425&v=1&fmt=webp"
     }
 });
 
