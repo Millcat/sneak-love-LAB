@@ -96,6 +96,9 @@ app.use("/", basePageRouter);
 const authRouter = require("./routes/auth.js");
 app.use("/auth", authRouter);
 
+const crudRouter = require("./routes/dashboard_sneaker");
+app.use(crudRouter);
+
 app.listen(process.env.PORT, () => {
   console.log(
     `app started at ${process.env.SITE_URL}:${process.env.PORT}`
