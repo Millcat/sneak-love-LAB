@@ -12,7 +12,7 @@ router.post("/signup", (req, res, next) => {
 
     // if (req.file) user.avatar = req.file.secure_url;
     if (!user.email || !user.password) {
-        res.redirect("/signup");
+        res.redirect("/auth/signup");
         // console.log("field missing")
         return;
     } else {
@@ -21,7 +21,7 @@ router.post("/signup", (req, res, next) => {
                 email: user.email
             })
             .then(dbRes => {
-                if (dbRes) return res.redirect("/signup");
+                if (dbRes) return res.redirect("/auth/signup");
 
                 const salt = bcrypt.genSaltSync(10); // cryptography librairie
                 const hashed = bcrypt.hashSync(user.password, salt); // generates a secured random hashed password
