@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 // const uploader = require("./../config/cloudinary");
 // if use of avatar in signup body => add middleware in router.post("/sign up", ...) : uploader.single("avatar"),
 
-// Registering
+// Registering SIGNUP
 
 router.post("/signup", (req, res, next) => {
 
@@ -28,9 +28,9 @@ router.post("/signup", (req, res, next) => {
                 const salt = bcrypt.genSaltSync(10); // cryptography librairie
                 const hashed = bcrypt.hashSync(user.password, salt); // generates a secured random hashed password
                 user.password = hashed; // new user is ready for db
-                console.log(user.email);
+                console.log(req.body);
                 userModel
-                    .create(user)
+                    .create(user) // name, lastname, email, password
                     .then(() => res.redirect("/signin"))
                     .catch(dbErr => console.log("user not created", dbErr));
             })
