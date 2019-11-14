@@ -80,7 +80,7 @@ app.use(eraseSessionMessage());
 const basePageRouter = require("./routes/index");
 app.use("/", basePageRouter);
 
-const listener = app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, () => {
   console.log(
     `app started at ${process.env.SITE_URL}:${process.env.PORT}`
   );
