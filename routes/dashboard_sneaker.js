@@ -19,7 +19,7 @@ router.get("/create-sneaker", (req, res) => {
 });
 
 
-router.post("/create-sneaker", uploader.single("image"), (req, res) => {
+router.post("/prod-add", uploader.single("image"), (req, res) => {
 
     const newSneaker = req.body
 
@@ -27,7 +27,7 @@ router.post("/create-sneaker", uploader.single("image"), (req, res) => {
     sneakerModel
         .create(newSneaker)
         .then(dbRes => {
-            res.redirect("/manage-sneakers");
+            res.redirect("/prod-manage");
         })
         .catch(dbErr => console.error(dbErr));
 });
@@ -76,7 +76,7 @@ router.post("/product-edit/:id", (req, res) => {
         .findByIdAndUpdate(req.params.id, req.body)
         .then(dbRes => {
             // console.log(dbRes);
-            res.redirect("/manage-sneakers");
+            res.redirect("/prod-manage");
         })
         .catch(dbErr => console.log("err", dbErr));
 });
@@ -86,7 +86,7 @@ router.get("/delete-sneaker/:id", (req, res) => {
     sneakerModel
         .findByIdAndDelete(req.params.id)
         .then(dbRes => {
-            res.redirect("/manage-sneakers");
+            res.redirect("/prod-manage");
         })
         .catch(dbErr => console.log("err", dbErr));
 });

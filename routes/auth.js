@@ -12,7 +12,7 @@ router.post("/signup", (req, res, next) => {
 
     // if (req.file) user.avatar = req.file.secure_url;
     if (!user.email || !user.password) {
-        res.redirect("/signup");
+        res.redirect("/auth/signup");
         // console.log("field missing")
         return;
     } else {
@@ -21,7 +21,7 @@ router.post("/signup", (req, res, next) => {
                 email: user.email
             })
             .then(dbRes => {
-                if (dbRes) return res.redirect("/signup");
+                if (dbRes) return res.redirect("/auth/signup");
 
                 const salt = bcrypt.genSaltSync(10); // cryptography librairie
                 const hashed = bcrypt.hashSync(user.password, salt); // generates a secured random hashed password
@@ -29,7 +29,7 @@ router.post("/signup", (req, res, next) => {
                 // console.log(req.body);
                 userModel
                     .create(user) // name, lastname, email, password
-                    .then(() => res.redirect("/signin")) // vers la home ?
+                    .then(() => res.redirect("/auth/signin")) // vers la home ?
                     .catch(dbErr => console.log("user not created", dbErr));
             })
             .catch(dbErr => next(dbErr));
@@ -51,7 +51,7 @@ router.post("/signin", (req, res, next) => {
         .findOne({
             email: user.email
         })
-        .then(dbRes => {
+        .then(dbRes => { // dbRes = { name: "guui" }
             if (!dbRes) {
                 // no user found with this email
                 req.flash("error", "wrong credentials");
@@ -65,6 +65,7 @@ router.post("/signin", (req, res, next) => {
                 return res.redirect("/");
             } else {
                 // encryption says : password match failde
+                req.flash("error", "wrong password");
                 return res.redirect("/auth/signin");
             }
         })
@@ -80,7 +81,16 @@ router.get("/signup", (req, res) => {
 });
 
 router.get("/signin", (req, res) => {
-    res.render("signin");
+    if (res.locals.error_msg.length > 0) { //
+        res.render("signin", {
+            msg: {
+                status: "error",
+                text: res.locals.error_msg[0]
+            }
+        });
+    } else {
+        res.render("signin");
+    }
 });
 
 router.get("/logout", (req, res) => {
