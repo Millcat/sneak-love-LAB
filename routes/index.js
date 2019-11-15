@@ -12,7 +12,9 @@ router.get("/", (req, res) => {
 router.get("/sneakers/collection", (req, res) => {
   sneakerModel
     .find()
+    .populate("id_tags")
     .then(sneakers => {
+
       tagModel.find()
         .then(tags => {
           res.render("products", {
@@ -48,7 +50,6 @@ router.get("/one-product/:id", (req, res) => {
       }
     })
     .then(dbRes => {
-      console.log(dbRes);
       res.render("one_product", {
         sneaker: dbRes,
       });

@@ -36,7 +36,6 @@ router.post("/create-tag", (req, res) => {
     tagModel
         .create(req.body)
         .then(dbRes => {
-            console.log(dbRes);
             res.redirect("/create-sneaker")
         })
         .catch(dbErr => console.log(dbErr))
@@ -45,8 +44,8 @@ router.post("/create-tag", (req, res) => {
 router.get("/manage-sneakers", (req, res) => {
     sneakerModel
         .find()
+        .populate("id_tags")
         .then(dbRes => {
-            console.log(dbRes);
             res.render("products_manage", {
                 sneakers: dbRes
             });
@@ -62,12 +61,17 @@ router.get("/product-edit/:id", (req, res) => {
                 $eq: req.params.id
             }
         })
-        .then(dbRes => {
-            res.render("product_edit", {
-                sneaker: dbRes
-            });
+        .then(sneaker => {
+            tagModel
+                .find()
+                .then(tags => {
+                    res.render("product_edit", {
+                        sneaker: sneaker,
+                        tags: tags
+                    });
+                })
+                .catch(dbErr => console.error(dbErr));
         })
-        .catch(dbErr => console.error(dbErr));
 });
 
 
