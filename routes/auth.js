@@ -36,6 +36,17 @@ router.post("/signup", (req, res, next) => {
     }
 });
 
+//middleware function for protected route: ==> place in the dashboard_sneaker.js view
+
+function protectedRoute(req, res, next) {
+    const isAuthorized = req.session.currentUser === true;
+    if (isAuthorized) { // if session.currentUser is true = use is connected
+        next(); // executes the next middleware in line OR the callback handling the request if this is the last middleware in line
+    } else {
+        res.redirect("/auth/signin");
+    }
+}
+
 // Login
 
 router.post("/signin", (req, res, next) => {
@@ -62,6 +73,7 @@ router.post("/signin", (req, res, next) => {
                 // encryption says : password match success
                 req.flash("success", `welcome ${dbRes.email}`);
                 req.session.currentUser = dbRes; // user is now in session... until session.destroy
+                console.log(req.session.currentUser);
                 return res.redirect("/");
             } else {
                 // encryption says : password match failde
