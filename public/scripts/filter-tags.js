@@ -20,7 +20,17 @@ function updateList(sneakers) {
 }
 
 function handleInput(evt) {
-    console.log(document.querySelectorAll("[data-tag-id]"))
+    // console.log(document.querySelectorAll("[data-tag-id]"))
+
+    // checkBoxes.forEach(checkBox => {
+    //     if (checkBox.checked) {
+    //         console.log(checkBox);
+    //         // arrIds.push(checkBox)
+    //     }
+    // })
+
+    // const arrIds;
+
     apiService
         .post(`/filtered-tags`, {
             toto: [2, 3, 4, 5]
