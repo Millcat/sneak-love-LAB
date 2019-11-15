@@ -19,7 +19,7 @@ router.get("/create-sneaker", (req, res) => {
 });
 
 
-router.post("/prod-add", uploader.single("image"), (req, res) => {
+router.post("/create-sneaker", uploader.single("image"), (req, res) => {
 
     const newSneaker = req.body
 
