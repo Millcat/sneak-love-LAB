@@ -1,10 +1,21 @@
 const express = require("express"); // import express in this module
 const router = new express.Router(); // create an app sub-module (router)
 const sneakerModel = require("../models/Sneaker");
+const tagModel = require("../models/Tag");
 const uploader = require("../config/cloudinary");
 
+
 router.get("/create-sneaker", (req, res) => {
-    res.render("products_add");
+    tagModel
+        .find()
+        .then(dbRes => {
+            res.render("products_add", {
+                tags: dbRes
+            });
+        })
+        .catch(dbErr => {
+            console.log(dbErr);
+        })
 });
 
 
@@ -20,6 +31,16 @@ router.post("/create-sneaker", uploader.single("image"), (req, res) => {
         })
         .catch(dbErr => console.error(dbErr));
 });
+
+router.post("/create-tag", (req, res) => {
+    tagModel
+        .create(req.body)
+        .then(dbRes => {
+            console.log(dbRes);
+            res.redirect("/create-sneaker")
+        })
+        .catch(dbErr => console.log(dbErr))
+})
 
 router.get("/manage-sneakers", (req, res) => {
     sneakerModel

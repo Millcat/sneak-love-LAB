@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const sneakerModel = require("../models/Sneaker");
+const tagModel = require("../models/Tag");
 const uploader = require("../config/cloudinary");
 
 router.get("/", (req, res) => {
@@ -11,17 +12,32 @@ router.get("/", (req, res) => {
 router.get("/sneakers/collection", (req, res) => {
   sneakerModel
     .find()
-    .then(dbRes => {
-      res.render("products", {
-        sneakers: dbRes
-      });
+    .then(sneakers => {
+      tagModel.find()
+        .then(tags => {
+          res.render("products", {
+            sneakers: sneakers,
+            tags: tags,
+            scripts: ["filter-tags.js"]
+          });
+        })
+        .catch(dbErr => console.log(dbErr))
     })
-    .catch(dbErr => console.log(dbErr))
 });
 
 
 router.get("/sneakers/:cat", (req, res) => {
-  res.send("bar");
+  sneakerModel
+    .find({
+      category: req.params.cat
+    })
+    .then(dbRes => {
+      res.render("products", {
+        sneakers: dbRes,
+        category: req.params.cat
+      })
+    })
+    .catch(dbErr => console.log(dbErr))
 });
 
 router.get("/one-product/:id", (req, res) => {
@@ -32,6 +48,7 @@ router.get("/one-product/:id", (req, res) => {
       }
     })
     .then(dbRes => {
+      console.log(dbRes);
       res.render("one_product", {
         sneaker: dbRes,
       });
@@ -40,8 +57,19 @@ router.get("/one-product/:id", (req, res) => {
 });
 
 
-
-
-
+router.get("/filtered-tags", (req, res) => {
+  console.log(req.query);
+  const q = req.query.tag === "true" ? {
+    label: true
+  } : {};
+  sneakerModel
+    .populate("id_tags")
+    .find(q)
+    .then(dbRes => {
+      console.log(dbRes);
+      res.send(dbRes)
+    })
+    .catch(dbErr => console.log(dbErr));
+});
 
 module.exports = router;

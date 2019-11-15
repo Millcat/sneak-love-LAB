@@ -6,8 +6,9 @@
     <ul id="tag_list" class="tag-list" data-category="{{category}}">
       {{#each tags}}
       <li class="tag-list-item">
-        <input id="input_{{this._id}}" type="checkbox" data-tag-id="{{this._id}}" class="checkbox" />
-        <label for="input_{{this._id}}">{{this.name}}</label>
+        <input id="input_{{this._id}}" type="checkbox" data-tag-id="{{this._id}}" name="{{this.label}}"
+          class="checkbox" />
+        <label for="input_{{this._id}}">{{this.label}}</label>
       </li>
       {{/each}}
     </ul>
@@ -25,7 +26,8 @@
         {{/compare}}
         collection <span id="products_count" class="products-count">({{sneakers.length}})</span>
       </h4>
-      <p class="products-subtitle">Prepare for your miles with the latest styles and colors of women’s running shoes.
+      <p class="products-subtitle">Prepare for your miles with the latest styles and colors of {{category}}'s
+        running shoes.
         Take advantage of signature a footwear technologies including Zoom, Flyknite, and find the
         pairs running shoes that align with your running philosophy.</p>
     </div>
