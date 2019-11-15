@@ -4,8 +4,19 @@ const sneakerModel = require("../models/Sneaker");
 const tagModel = require("../models/Tag");
 const uploader = require("../config/cloudinary");
 
+//middleware function for protected route: ==> place in the dashboard_sneaker.js view
 
-router.get("/create-sneaker", (req, res) => {
+function protectedRoute(req, res, next) {
+    if (req.session.currentUser) { // if session.currentUser is true = use is connected
+        return next(); // executes the next middleware in line OR the callback handling the request if this is the last middleware in line
+    } else {
+        res.redirect("/auth/signin");
+    }
+}
+
+// ROUTES AND CRUD
+
+router.get("/create-sneaker", protectedRoute, (req, res) => {
     tagModel
         .find()
         .then(dbRes => {
@@ -15,13 +26,13 @@ router.get("/create-sneaker", (req, res) => {
         })
         .catch(dbErr => {
             console.log(dbErr);
-        })
+        });
 });
 
 
 router.post("/create-sneaker", uploader.single("image"), (req, res) => {
-    console.log(req)
-    const newSneaker = req.body
+    console.log(req);
+    const newSneaker = req.body;
     if (req.file) newSneaker.image = req.file.secure_url;
 
     sneakerModel
@@ -36,12 +47,12 @@ router.post("/create-tag", (req, res) => {
     tagModel
         .create(req.body)
         .then(dbRes => {
-            res.redirect("/create-sneaker")
+            res.redirect("/create-sneaker");
         })
-        .catch(dbErr => console.log(dbErr))
-})
+        .catch(dbErr => console.log(dbErr));
+});
 
-router.get("/manage-sneakers", (req, res) => {
+router.get("/manage-sneakers", protectedRoute, (req, res) => {
     sneakerModel
         .find()
         .populate("id_tags")
@@ -71,14 +82,14 @@ router.get("/product-edit/:id", (req, res) => {
                     });
                 })
                 .catch(dbErr => console.error(dbErr));
-        })
+        });
 });
 
 
 router.post("/product-edit/:id", uploader.single("image"), (req, res) => {
 
-    console.log(req.file)
-    const newSneaker = req.body
+    console.log(req.file);
+    const newSneaker = req.body;
     if (req.file) newSneaker.image = req.file.secure_url;
 
     sneakerModel
