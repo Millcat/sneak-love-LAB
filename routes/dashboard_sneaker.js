@@ -3,12 +3,12 @@ const router = new express.Router(); // create an app sub-module (router)
 const sneakerModel = require("../models/Sneaker");
 const uploader = require("../config/cloudinary");
 
-router.get("/create-sneaker", (req, res) => {
+router.get("/prod-add", (req, res) => {
     res.render("products_add");
 });
 
 
-router.post("/create-sneaker", uploader.single("image"), (req, res) => {
+router.post("/prod-add", uploader.single("image"), (req, res) => {
 
     const newSneaker = req.body
 
@@ -16,12 +16,12 @@ router.post("/create-sneaker", uploader.single("image"), (req, res) => {
     sneakerModel
         .create(newSneaker)
         .then(dbRes => {
-            res.redirect("/manage-sneakers");
+            res.redirect("/prod-manage");
         })
         .catch(dbErr => console.error(dbErr));
 });
 
-router.get("/manage-sneakers", (req, res) => {
+router.get("/prod-manage", (req, res) => {
     sneakerModel
         .find()
         .then(dbRes => {
@@ -55,7 +55,7 @@ router.post("/product-edit/:id", (req, res) => {
         .findByIdAndUpdate(req.params.id, req.body)
         .then(dbRes => {
             // console.log(dbRes);
-            res.redirect("/manage-sneakers");
+            res.redirect("/prod-manage");
         })
         .catch(dbErr => console.log("err", dbErr));
 });
@@ -65,7 +65,7 @@ router.get("/delete-sneaker/:id", (req, res) => {
     sneakerModel
         .findByIdAndDelete(req.params.id)
         .then(dbRes => {
-            res.redirect("/manage-sneakers");
+            res.redirect("/prod-manage");
         })
         .catch(dbErr => console.log("err", dbErr));
 });

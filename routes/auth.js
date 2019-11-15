@@ -51,7 +51,7 @@ router.post("/signin", (req, res, next) => {
         .findOne({
             email: user.email
         })
-        .then(dbRes => {
+        .then(dbRes => { // dbRes = { name: "guui" }
             if (!dbRes) {
                 // no user found with this email
                 req.flash("error", "wrong credentials");
@@ -65,6 +65,7 @@ router.post("/signin", (req, res, next) => {
                 return res.redirect("/");
             } else {
                 // encryption says : password match failde
+                req.flash("error", "wrong password");
                 return res.redirect("/auth/signin");
             }
         })
@@ -80,7 +81,16 @@ router.get("/signup", (req, res) => {
 });
 
 router.get("/signin", (req, res) => {
-    res.render("signin");
+    if (res.locals.error_msg.length > 0) { //
+        res.render("signin", {
+            msg: {
+                status: "error",
+                text: res.locals.error_msg[0]
+            }
+        });
+    } else {
+        res.render("signin");
+    }
 });
 
 router.get("/logout", (req, res) => {
