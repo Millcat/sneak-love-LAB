@@ -26,10 +26,18 @@
         {{/compare}}
         collection <span id="products_count" class="products-count">({{sneakers.length}})</span>
       </h4>
-      <p class="products-subtitle">Prepare for your miles with the latest styles and colors of {{category}}'s
+      {{#unless category}}
+      <p class="products-subtitle">Prepare for your miles with the latest styles and colors of
         running shoes.
         Take advantage of signature a footwear technologies including Zoom, Flyknite, and find the
         pairs running shoes that align with your running philosophy.</p>
+      {{else}}
+      <p class="products-subtitle">Prepare for your miles with the latest styles and colors of
+        <span style="font-weight: bold;">{{category}}</span>'s
+        running shoes.
+        Take advantage of signature a footwear technologies including Zoom, Flyknite, and find the
+        pairs running shoes that align with your running philosophy.</p>
+      {{/unless}}
     </div>
     {{#unless sneakers}}
     <p>Sorry, no sneakers yet !</p>

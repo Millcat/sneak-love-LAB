@@ -1,5 +1,5 @@
 <div class="big-container product-manage-wrapper flexed-item">
-  <form method="post" action="/product-edit/{{sneaker._id}}" class="edit-product-form">
+  <form method="post" action="/product-edit/{{sneaker._id}}" class="edit-product-form" enctype="multipart/form-data">
     <h3 class="form-title"> Edit Sneaker</h3>
     <div class="form-item-wrapper flexed-item">
       <label for="sneacker-name" class="label-name label">Model name</label>
@@ -25,6 +25,10 @@
       <label for="sneacker-price" class="label-price label">Price</label>
       <input id="sneacker-price" name="price" type="number" class="sneacker-price input" min="1"
         value="{{sneaker.price}}">
+    </div>
+    <div class="form-item-wrapper flexed-item">
+      <label for="sneaker-img" class="label-price label">Image</label>
+      <input id="sneaker-img" type="file" class="sneacker-image input" name="image">
     </div>
     <div class="form-item-wrapper flexed-item">
       <label for="sneacker-main-cat" class="label-main-cat label">Main category</label>

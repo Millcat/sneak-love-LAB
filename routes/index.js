@@ -33,6 +33,7 @@ router.get("/sneakers/:cat", (req, res) => {
     .find({
       category: req.params.cat
     })
+    .populate("id_tags")
     .then(dbRes => {
       res.render("products", {
         sneakers: dbRes,
@@ -58,19 +59,23 @@ router.get("/one-product/:id", (req, res) => {
 });
 
 
-router.get("/filtered-tags", (req, res) => {
-  console.log(req.query);
-  const q = req.query.tag === "true" ? {
-    label: true
-  } : {};
+router.post("/filtered-tags", (req, res) => {
+  // console.log(req.query)
+  console.log(req.body)
+  // res.send("ok")
   sneakerModel
-    .populate("id_tags")
-    .find(q)
-    .then(dbRes => {
-      console.log(dbRes);
-      res.send(dbRes)
+    .find({
+      id_tags: ["5dcde0a848f92309f29a6086"]
     })
-    .catch(dbErr => console.log(dbErr));
+    .then(dbRes => {
+      res.send(dbRes)
+      // res.render("collections", {
+      //   sneaker: dbRes,
+      //   scripts: ["filter-tags.js"]
+      // });
+    })
+    .catch(dbErr => console.log("err", dbErr));
+
 });
 
 module.exports = router;
