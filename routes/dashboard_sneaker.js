@@ -20,10 +20,10 @@ router.get("/create-sneaker", (req, res) => {
 
 
 router.post("/create-sneaker", uploader.single("image"), (req, res) => {
-
+    console.log(req)
     const newSneaker = req.body
-
     if (req.file) newSneaker.image = req.file.secure_url;
+
     sneakerModel
         .create(newSneaker)
         .then(dbRes => {
@@ -75,7 +75,12 @@ router.get("/product-edit/:id", (req, res) => {
 });
 
 
-router.post("/product-edit/:id", (req, res) => {
+router.post("/product-edit/:id", uploader.single("image"), (req, res) => {
+
+    console.log(req.file)
+    const newSneaker = req.body
+    if (req.file) newSneaker.image = req.file.secure_url;
+
     sneakerModel
         .findByIdAndUpdate(req.params.id, req.body)
         .then(dbRes => {

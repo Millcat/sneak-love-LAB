@@ -1,6 +1,4 @@
-const service = axios.create({
-    baseURL: "http://localhost:9090"
-});
+const service = axios.create();
 
 console.log("service =>");
 console.log(service); // this is an axios instance

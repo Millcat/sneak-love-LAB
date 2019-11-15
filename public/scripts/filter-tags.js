@@ -20,12 +20,14 @@ function updateList(sneakers) {
 }
 
 function handleInput(evt) {
-    // console.log(evt.target.name);
+    console.log(document.querySelectorAll("[data-tag-id]"))
     apiService
-        .get(`/filtered-tags?tag=${evt.target.name}`)
+        .post(`/filtered-tags`, {
+            toto: [2, 3, 4, 5]
+        })
         .then(apiRes => {
             console.log(apiRes.data);
-            updateList(apiRes.data);
+            // updateList(apiRes.data);
         })
         .catch(apiErr => {
             console.log(apiErr);
